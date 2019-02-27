@@ -1,6 +1,6 @@
 # c-DDM triggering
 
-In this repository you will find code to accompany the article on Cross-Differential Dynamic Microscopy (DOI, link, itd.). 
+In this repository you will find code to accompany the article on Cross-Differential Dynamic Microscopy (DOI). 
 
 ### Summary
 
@@ -11,7 +11,6 @@ In the article we demonstrate the use of a dual-camera-equipped microscope for t
 In the repository we included:
 * Arduino code for the random triggering of cameras and its simulation,
 * A Python script for controlling the arduino via serial port,
-* An example Python script containing a piece of code for fast calculation of cross-image differences.
 
 ## Instructions
 
@@ -37,15 +36,6 @@ Arduino will output pulses at random times on either one or the other pin or bot
 >python serial_init.py -mode S -port COM1
 ```
 The random times will be saved in a text file into two columns. The first column tells which pin was triggered (0 - both, 1- first, 2 -second) and the second column are the times.
-
-### Analysis
-
-We also included an example of how can the the cross-image differences be calculated in a relatively fast way using Python library numba. The example is in the script fft_diff.py. In our case Fourier transforms were two dimensional arrays, flattened with a mask of points we were interested in.
-
-## Authors
-* **Matej Arko**  - [arkomatej](https://github.com/arkomatej)
-
-* **Andrej Petelin** - [andrej5elin](https://github.com/andrej5elin); andrej.petelin@ijs.si
 
 
 ## License
