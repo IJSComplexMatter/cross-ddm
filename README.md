@@ -10,7 +10,7 @@ In the article we demonstrate the use of a dual-camera-equipped microscope for t
 
 In the repository we included:
 * Arduino code for the random triggering of cameras and its simulation,
-* A Python script for controlling the arduino via serial port,
+* A Python script for controlling the arduino via serial port
 
 ## Instructions
 
