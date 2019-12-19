@@ -9,8 +9,11 @@ In the article we demonstrate the use of a dual-camera-equipped microscope for t
 ### What is inside
 
 In the repository we included:
+* Description of the experimental system and instructions for measurements
 * Arduino code for the random triggering of cameras and its simulation,
-* A Python script for controlling the arduino via serial port,
+* A Python script for controlling the arduino via serial port
+* A Python script for camera alignment and focusing for FLIR cameras (Spinnaker SDK)
+* A Python script for frame grabbing and analysis for FLIR cameras (Spinnaker SDK)
 
 ## Instructions
 
