@@ -1,6 +1,6 @@
 # c-DDM triggering
 
-In this repository you will find code to accompany the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)). 
+In this repository you will find code and examples to accompany the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)). 
 
 ### Summary
 
@@ -21,22 +21,11 @@ Software requirements:
 * Arduino Software (IDE)
 * [**eRCaGuy_TimerCounter** ](https://github.com/ElectricRCAircraftGuy/eRCaGuy_TimerCounter) Arduino library
 
-### Triggering the cameras
+### Table of contents
 
-Before uploading the sketch cddm_triggering.ino to the Arduino, all the necessary parameters should be set inside the sketch. This includes serial baud rate, total number of frames to capture N, triggering pulse width pw, number of allowed random trigger times in one period n (see equations 3 and 4 in the article) and average frame rate on one camera fps. Mind that because the way the random triggering is written, the average frame rate should not exceed one half of the camera maximum framerate at the current settings.
-
-When the sketch is uploaded, the Arduino can be controlled from the console with the Python script serial_init.py. It can be used for random triggering or for the simulation of the triggering times, used in the analysis. 
-
-Random triggering can be started with the following command, where one should input T for triggering and the appropriate serial port.
-```
->python serial_init.py -mode T -port COM1
-```
-Arduino will output pulses at random times on either one or the other pin or both. During triggering, the built in LED on the Arduino is turned on. After it stops, the LED is blinking. The times of the pulses must be known for the calculation of the cross image differences. For the simulation of these times, the same Python script can be re-run with mode S like so:
-```
->python serial_init.py -mode S -port COM1
-```
-The random times will be saved in a text file into two columns. The first column tells which pin was triggered (0 - both, 1- first, 2 -second) and the second column are the times.
-
+- [01 - Experimental setup](/01-experimental-setup.md)
+- [02 - Triggering the cameras](/02-camera-triggering.md)
+- [03 - Image acquistion and analysis](/03-acquisition-and-analysis.md)
 
 ## License
 
