@@ -1,6 +1,6 @@
 # c-DDM triggering
 
-In this repository you will find code to accompany the article on Cross-Differential Dynamic Microscopy (DOI). 
+In this repository you will find code to accompany the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)). 
 
 ### Summary
 
