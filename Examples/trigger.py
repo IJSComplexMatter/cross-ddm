@@ -40,7 +40,8 @@ def read_trigger(arduino, conf = config.TRIGGER_CONFIG_DEFAULT):
        A tuple of two ndarrays of trigger times for camera 1 and 2. Dtype of
        the output arrays is 'int' and describes real times in units of microseconds.
     """
-    data = 0, conf["triggering_scheme"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
+    
+    data = 0, conf["mode"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
     count = data[2]
     arduino.write(struct.pack('<bbihhhhh',*data))
     #arduino should write down the parameters in a single line
@@ -73,20 +74,61 @@ def read_trigger(arduino, conf = config.TRIGGER_CONFIG_DEFAULT):
     mask2 = np.logical_or(mask0, mask2)
     
     t1,t2 = out[mask1,1], out[mask2,1]
-    
+
     return t1,t2
 
-def start_trigger(arduino,conf = config.ARD_CONFIG_DEFAULT):
-    """Starts triggering."""
-    data = 1, conf["triggering_scheme"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
+
+def start_trigger(arduino,conf = config.TRIGGER_CONFIG_DEFAULT):
+    '''
+    
+
+    Parameters
+    ----------
+    arduino : serial
+        An instance of serial.Serial, an opened serial port as returned by the
+        open_arduino function.
+    conf : TYPE, optional
+        DESCRIPTION. The default is config.TRIGGER_CONFIG_DEFAULT.
+
+    Returns
+    -------
+    None.
+
+    '''
+    
+    data = 1, conf["mode"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
     arduino.write(struct.pack('<bbihhhhh',*data))
-    line=arduino.readline().decode("utf-8").strip()#we should see a single line answer from arduino
+    line=arduino.readline().decode("utf-8").strip() #we should see a single line answer from arduino
+    
     print("Trigger started.")
     print(line)
 
     
 def open_arduino(port = None, baudrate = 115200, timeout = 2):
-    """Opens serial port and looks for arduino."""
+    '''
+    Initiates a connection to an arduino on an available port.
+
+    Parameters
+    ----------
+    port : str, optional
+         Device name or None. The default is None.
+    baudrate : int, optional
+        Baud rate such as 9600 or 115200 etc. The default is 115200.
+    timeout : float, optional
+        Set a read timeout value in seconds. The default is 2.
+
+    Raises
+    ------
+    Exception
+        In case of no arduino found on any port or unknown device.
+
+    Returns
+    -------
+    arduino : serial
+        An instance of serial.Serial, an opened serial port.
+
+    '''
+    
     if port is None:
         from serial.tools.list_ports import comports
         ports = comports()
@@ -101,7 +143,7 @@ def open_arduino(port = None, baudrate = 115200, timeout = 2):
         raise Exception("No arduino found on any available port!")
         
     arduino = serial.Serial(port, baudrate, timeout=timeout) 
-    line=arduino.readline().decode("utf-8").strip()#we should see a single line answer from arduino, if it exists on a given port 
+    line=arduino.readline().decode("utf-8").strip() #we should see a single line answer from arduino, if it exists on a given port 
     
     if line.startswith("CDDM Trigger"):
         print(line)
@@ -109,72 +151,108 @@ def open_arduino(port = None, baudrate = 115200, timeout = 2):
     else:
         raise Exception("Unknown device '{}'".format(line))
         
+        
 def _print_progress (iteration, total, prefix = '', suffix = '', decimals = 1, length = 50, fill = '='):
     """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
+    Call in a loop to create terminal progress bar.
+    
+    Parameters
+    ----------
+    iteration : int 
+        current iteration
+    total : int
+        total iterations
+    prefix : str, optional
+        prefix string
+    suffix : str, optional
+        suffix string
+    decimals : int, optional
+        positive number of decimals in percent complete
+    length : int, optional
+        character length of bar
+    fill : str, optional
+        bar fill character
+        
+    Returns
+    -------
+    None.
     """
 
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
     print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = '\r')
-#        sys.stdout.write(s)
-#        sys.stdout.flush()
-    # Print New Line on Complete
+
     if iteration == total: 
         print()
 
 
 def run_arduino(conf):
+    '''
+    
+
+    Parameters
+    ----------
+    conf : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    '''
+    
+    arduino = open_arduino(baudrate= 115200)
+    time.sleep(2)
+
+    start_trigger(arduino,conf)
+    
+    arduino.close()
+
+   
+def run_simulation(conf):
+    '''
+    
+
+    Parameters
+    ----------
+    conf : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    t1 : TYPE
+        DESCRIPTION.
+    t2 : TYPE
+        DESCRIPTION.
+
+    '''
+    
+    from os import path
     
     arduino = open_arduino(baudrate= 115200)
     time.sleep(2)
     
-    mode=conf["mode"]
+    t1,t2 = read_trigger(arduino,conf) 
+    t1=t1//conf["deltat"]
+    t2=t2//conf["deltat"]
     
-    if mode not in ["t","T","s","S","b","B"]:
-        raise ValueError("Wrong mode input, please insert (t/s/b) for triggering/simulation/both mode.")
+    path1="t1_"+conf["cpath"]+".txt"
+    path2="t2_"+conf["cpath"]+".txt"
     
-    if mode in ["t","T"]:
-        start_trigger(arduino,conf)
-        arduino.close()
-        duration = 2*(conf["count"] * conf["n"] * conf["deltat"])/1e6 
-        for i in range(100):
-            _print_progress(i,100)
-            time.sleep(duration/100)
-        _print_progress(100,100)
+    if path.exists(path1) and path.exists(path2):
+        print('Simulated times already saved.')
+    else:    
+        np.savetxt(path1, t1, fmt = "%d")
+        np.savetxt(path2, t2, fmt = "%d")
     
-    elif mode in ["s","s"]:
-        t1,t2 = read_trigger(arduino,conf)    
-        np.savetxt("t1.txt",t1//conf["deltat"],fmt = "%d")
-        np.savetxt("t2.txt",t2//conf["deltat"],fmt = "%d")
-        arduino.close()
-        return t1,t2
-        
-    else:
-        t1,t2 = read_trigger(arduino,conf)    
-        np.savetxt("t1.txt",t1//conf["deltat"],fmt = "%d")
-        np.savetxt("t2.txt",t2//conf["deltat"],fmt = "%d")
-        
-        start_trigger(arduino,conf)
-        arduino.close()
-        duration = 2*(conf["count"] * conf["n"] * conf["deltat"])/1e6 
-        for i in range(100):
-            _print_progress(i,100)
-            time.sleep(duration/100)
-        _print_progress(100,100)
-        return t1,t2
+    arduino.close()
+    
+    return t1,t2
 
 if __name__ == '__main__':
     
+    #loading configuration using configuration parser and argument parser
     trigger_config, cam_config = config.load_config()
     
     run_arduino(trigger_config)
