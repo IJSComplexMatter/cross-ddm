@@ -200,7 +200,7 @@ void loop() {
 
       //print to serial
       Serial.print("Triggering mode: ");
-      Serial.print(trigger.data.mode);      
+      Serial.print(trigger.data.triggering_scheme);      
       Serial.print(", N: ");
       Serial.print(N);
       Serial.print(", Delta t (us): ");
@@ -254,7 +254,7 @@ void loop() {
       
         // PULSES ON BOTH PINS
                                           // EXAMPLE
-        if(t1==t2 || zero_trigger==0){
+        if(t1==t2){
           if (sdelay >= 0){               // trigger starts first
             if (sdelay + pws <= pw){      // strobe ends first
               if (p1 == 0){               // simultaneous start
@@ -489,16 +489,17 @@ void loop() {
           j++;
           t2=(j*period+r2*deltat)*2;
         }
-    
-        // Term added to reduce the statistical error of the zero delay data.
-        if (i==j){
-          zero_trigger=random(0,2*n);
-          if (zero_trigger==0 && modified_scheme == true){
+      
+      
+       // Term added to reduce the statistical error of the zero delay data.
+       if (i==j){
+         zero_trigger=random(0,2*n);
+          if ((zero_trigger==0) && (modified_scheme == true)){
             t2=t1;
             //t2 is set to t1 with a probability of 1/2n
           }
         }       
-      } 
+      }
     
       //Stopping criteria.
       if(i==N && j==N){
@@ -530,12 +531,9 @@ void loop() {
     while(true){
   
       // Pulses on both pins at the same time. (line looks like this: 0 \t time \n)
-      if(t1==t2 || zero_trigger==0){
+      if(t1==t2){
         _time.data.id = 0;
         _time.data.t = t1;
-        //Serial.print("0");
-        //Serial.print("\t");
-        //Serial.print(t1);
         Serial.write(_time.bytes, 5);
         r1=random(0,n);
         r2=(random(0,2))*n;
@@ -549,9 +547,6 @@ void loop() {
       else if(t1<t2){
         _time.data.id = 1;
         _time.data.t = t1;
-        //Serial.print("1");
-        //Serial.print("\t");
-        //Serial.print(t1);
         Serial.write(_time.bytes, 5);
         r1=random(0,n);
         i++;
@@ -562,19 +557,17 @@ void loop() {
       else if(t2<t1){
         _time.data.id = 2;
         _time.data.t = t2;
-        //Serial.print("2");
-        //Serial.print("\t");
-        //Serial.print(t2); 
         Serial.write(_time.bytes, 5); 
         r2=(random(0,2))*n;
         j++;
         t2=(j*period+r2*deltat);
       }
-  
-      // Term added to reduce the statistical error of the zero delay data.
-      if (i==j && modified_scheme == true){
+
+      
+      //Term added to reduce the statistical error of the zero delay data.
+      if (i==j){
         zero_trigger=random(0,n*2);
-        if (zero_trigger==0 && modified_scheme == true){
+        if ((zero_trigger==0) && (modified_scheme == true)){
           t2=t1;
         }
       }
