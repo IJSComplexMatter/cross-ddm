@@ -23,7 +23,8 @@ import config
 
 
 def read_trigger(arduino, conf = config.TRIGGER_CONFIG_DEFAULT):
-    """Reads trigger times from arduino, given the configuration parameters.
+    '''
+    Reads trigger times from arduino, given the configuration parameters.
     
     Parameters
     ----------
@@ -39,7 +40,8 @@ def read_trigger(arduino, conf = config.TRIGGER_CONFIG_DEFAULT):
     t1, t2 : ndarray, ndarray 
        A tuple of two ndarrays of trigger times for camera 1 and 2. Dtype of
        the output arrays is 'int' and describes real times in units of microseconds.
-    """
+       
+    '''
     
     data = 0, conf["mode"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
     count = data[2]
@@ -80,7 +82,7 @@ def read_trigger(arduino, conf = config.TRIGGER_CONFIG_DEFAULT):
 
 def start_trigger(arduino,conf = config.TRIGGER_CONFIG_DEFAULT):
     '''
-    
+    Starts the triggering by sending a command to the arduino and reads the answer.
 
     Parameters
     ----------
@@ -153,7 +155,7 @@ def open_arduino(port = None, baudrate = 115200, timeout = 2):
         
         
 def _print_progress (iteration, total, prefix = '', suffix = '', decimals = 1, length = 50, fill = '='):
-    """
+    '''
     Call in a loop to create terminal progress bar.
     
     Parameters
@@ -176,7 +178,7 @@ def _print_progress (iteration, total, prefix = '', suffix = '', decimals = 1, l
     Returns
     -------
     None.
-    """
+    '''
 
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
@@ -189,17 +191,17 @@ def _print_progress (iteration, total, prefix = '', suffix = '', decimals = 1, l
 
 def run_arduino(conf):
     '''
-    
+    Runs the arduino and starts triggering.
 
     Parameters
     ----------
-    conf : TYPE
-        DESCRIPTION.
+    conf : dict
+        Triggering settings.
 
     Returns
     -------
     None.
-
+    
     '''
     
     arduino = open_arduino(baudrate= 115200)
@@ -212,50 +214,46 @@ def run_arduino(conf):
    
 def run_simulation(conf):
     '''
-    
+    Runs the simulation of random times on the arduino. 
+    Times are saved in a text file.
 
     Parameters
     ----------
-    conf : TYPE
-        DESCRIPTION.
+    conf : dict
+        Triggering settings.
 
     Returns
     -------
-    t1 : TYPE
-        DESCRIPTION.
-    t2 : TYPE
-        DESCRIPTION.
-
+    t1 : ndarray
+        Array of random times.
+    t2 : ndarray
+        Array of random times.
+        
     '''
-    
-    from os import path
     
     arduino = open_arduino(baudrate= 115200)
     time.sleep(2)
-    
-    t1,t2 = read_trigger(arduino,conf) 
-    t1=t1//conf["deltat"]
-    t2=t2//conf["deltat"]
-    
+
     path1="t1_"+conf["cpath"]+".txt"
     path2="t2_"+conf["cpath"]+".txt"
     
-    if path.exists(path1) and path.exists(path2):
-        print('Simulated times already saved.')
-    else:    
-        np.savetxt(path1, t1, fmt = "%d")
-        np.savetxt(path2, t2, fmt = "%d")
+    t1,t2 = read_trigger(arduino,conf)
+    t1=t1//conf["deltat"]
+    t2=t2//conf["deltat"]
+    np.savetxt(path1, t1, fmt = "%d")
+    np.savetxt(path2, t2, fmt = "%d")
     
     arduino.close()
     
     return t1,t2
+
 
 if __name__ == '__main__':
     
     #loading configuration using configuration parser and argument parser
     trigger_config, cam_config = config.load_config()
     
-    run_arduino(trigger_config)
+    run_simulation(trigger_config)
 
      
 

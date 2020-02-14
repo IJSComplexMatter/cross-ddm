@@ -27,10 +27,12 @@ import time
 
 def print_device_info(cam):
     '''
+    Prints device info of a given camera.
+    
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
         
     Returns
     -------
@@ -56,14 +58,14 @@ def print_device_info(cam):
 
 def configure_exposure(cam,config):
     '''
-    
+    Sets exposure for the given camera and settings.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -89,14 +91,15 @@ def configure_exposure(cam,config):
 
 def configure_framerate(cam,config):
     '''
-    
+    Sets framerate for the given camera and settings. 
+    If framerate setting is larger than possible, fastest possible framerate is set.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -122,14 +125,14 @@ def configure_framerate(cam,config):
 
 def configure_image_format(cam,config):
     '''
-    
+    Sets pixel format, ADC bit depth, image width, height and offset for the given camera and settings.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -183,14 +186,14 @@ def configure_image_format(cam,config):
 
 def configure_blacklevel(cam,config):
     '''
-    
+    Enables or disables black level clamping for the given cameras.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -210,14 +213,14 @@ def configure_blacklevel(cam,config):
 
 def configure_gain(cam,config):
     '''
-    
+    Enables or disables auto gain or sets gain value for the given camera.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -241,14 +244,14 @@ def configure_gain(cam,config):
 
 def configure_gamma(cam,config):
     '''
-    
-
+    Enables or disables gamma for the given camera.
+     
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -268,14 +271,14 @@ def configure_gamma(cam,config):
 
 def configure_trigger(cam,config):
     '''
-    
+    Enables or disables triggering for the given camera and sets trigger source.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera Object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -305,14 +308,14 @@ def configure_trigger(cam,config):
     
 def configure_camera(cam,config):
     '''
-    
+    Function configures a camera with given configuration and prints the device info.
 
     Parameters
     ----------
-    cam : TYPE
-        DESCRIPTION.
-    config : TYPE
-        DESCRIPTION.
+    cam : PySpin.PySpin.CameraPtr
+        Camera object.
+    config : dict
+        Camera settings.
 
     Returns
     -------
@@ -332,7 +335,8 @@ def configure_camera(cam,config):
 
 def run_cameras(conf):
     '''
-    Generator that initiates the connected cameras with the specified configuration and yields a tuple of captured frames.
+    Generator function that initiates the connected cameras with the specified configuration 
+    and yields a tuple of captured frames.
 
     Parameters
     ----------
@@ -342,7 +346,7 @@ def run_cameras(conf):
     Yields
     ------
     tuple
-        Tuple of captured ND array frames.
+        Tuple of captured ndarray frames.
 
     '''
     
@@ -410,7 +414,7 @@ def run_cameras(conf):
 
 def _queued_frame_grabber(f,server_queue,  args = (), kwargs = {}):
     '''
-    Function grabs frames from the video generator and puts them into a multiprocessing queue.
+    Function grabs frames from the video generator function and puts them into a multiprocessing queue.
 
     Parameters
     ----------
@@ -453,12 +457,13 @@ def _queued_frame_grabber(f,server_queue,  args = (), kwargs = {}):
 
 def queued_multi_frame_grabber(f,args = (), kwargs = {}):
     '''
-    Function that retrieves frames from the multiprocessing queue and yields a tuple of frames.
+    Generator function that starts multiprocessing Process() and Queue(),
+    retrieves frames from the multiprocessing queue and yields them.
 
     Parameters
     ----------
     f : function
-        A generator function that yields frames that are put into the queue.
+        A generator function that yields frames which are put into the queue.
     args : TYPE, optional
         DESCRIPTION. The default is ().
     kwargs : TYPE, optional
@@ -467,9 +472,10 @@ def queued_multi_frame_grabber(f,args = (), kwargs = {}):
     Yields
     ------
     frames : tuple
-        Tuple of captured ND array frames.
+        Tuple of captured ndarray frames.
 
     '''
+    
     server_queue = Queue()
     p = Process(target=_queued_frame_grabber, args=(f,server_queue), kwargs = {"args" : args, "kwargs" : kwargs})
     p.daemon=True
@@ -499,7 +505,8 @@ def queued_multi_frame_grabber(f,args = (), kwargs = {}):
 
 def _frame_grabber(trigger_config, cam_config):
     '''
-    Function grabs frames from a video generator and yields them.
+    Generator function that grabs the frames from the run_cameras function and yields them.
+    If triggering is activated, it also starts the triggering, otherwise capturing is continuous.
 
     Parameters
     ----------
@@ -511,7 +518,7 @@ def _frame_grabber(trigger_config, cam_config):
     Yields
     ------
     frames : tuple
-        Tuple of captured ND array frames.
+        Tuple of captured ndarray frames.
 
     '''
     
@@ -528,24 +535,20 @@ def _frame_grabber(trigger_config, cam_config):
 if __name__ == '__main__':
     
     import config
-    from cddm.video import show_video, play, show_diff
+    from cddm.video import show_video, play
     import cddm
     from cddm.fft import show_alignment_and_focus
     cddm.conf.set_cv2(1)
     
     trigger_config, cam_config = config.load_config()
        
-    #VIDEO = _frame_grabber(trigger_config,cam_config)
-    VIDEO = queued_multi_frame_grabber(_frame_grabber, (trigger_config,cam_config))
+    VIDEO = _frame_grabber(trigger_config,cam_config)
+    #VIDEO = queued_multi_frame_grabber(_frame_grabber, (trigger_config,cam_config))
     
-# =============================================================================
     video = show_video(VIDEO, id=0)   
-# =============================================================================
 
-# =============================================================================
-    f_video = show_alignment_and_focus(video, id=0, clipfactor=0.25)
+    f_video = show_alignment_and_focus(video, id=0, clipfactor=0.1)
     f_video = play(f_video, fps = 15)
-# =============================================================================
 
     for i,frames in enumerate(f_video):
         print ("Frame ",i)
