@@ -19,7 +19,7 @@ import configparser
 import argparse
 import datetime
 
-s = """
+s = '''
 [TRIGGERING SETTINGS]
 # triggering mode, 0 for basic triggering mode, 1 for modified triggering mode
 mode = {mode}
@@ -69,7 +69,7 @@ triggersource = {triggersource}
 cam1serial = {cam1serial}
 # camera 2 serial number            
 cam2serial = {cam2serial}            
-"""
+'''
 
 #Default settings
 TRIGGER_CONFIG_DEFAULT = {
@@ -102,7 +102,7 @@ CAM_CONFIG_DEFAULT={
         }
     
 def get_args():
-    """
+    '''
     Creates argument parser and returns input data.
 
     Returns
@@ -110,7 +110,7 @@ def get_args():
     Namespace
         A Namespace object containing input data.
 
-    """
+    '''
     
     parser = argparse.ArgumentParser(argument_default=argparse.SUPPRESS, description="Arduino initialization for c-DDM triggering and time simulation. Set optional parameters to override configuration file.") 
     
@@ -148,7 +148,7 @@ def get_args():
 
 
 def load_config():
-    """
+    '''
     Loads settings from the specified configuration file if it exists. If file is not specified or if it doesnt exist, it creates a file 
     with default parameters. Read parameters are overriden and saved when the user inputs different parameters in the console.
 
@@ -158,10 +158,10 @@ def load_config():
         Triggering configuration. 
     CAM_CONFIG : dict
         Camera configuration.
-    """
+        
+    '''
    
     args=get_args()
-    triggering_type=args.type
     
     override_keys=list(vars(args).keys())
     override=vars(args)
@@ -181,10 +181,16 @@ def load_config():
         CAM_CONFIG={key: int(value) for key, value in c_cam.items()}
         
     except:
-        print("WARNING: Appropriate configuration file not found. Created a configuration file with default settings.") 
-        TRIGGER_CONFIG=TRIGGER_CONFIG_DEFAULT.copy()
-        CAM_CONFIG=CAM_CONFIG_DEFAULT.copy()
-        cpath="config"+dtfile+".ini"  
+        try:   
+            cpath=args.cpath
+            print("Configuration file doesnt not yet exist. Created a configuration file with default settings.") 
+            TRIGGER_CONFIG=TRIGGER_CONFIG_DEFAULT.copy()
+            CAM_CONFIG=CAM_CONFIG_DEFAULT.copy()
+        except:
+            print("Created a default configuration file with default settings.") 
+            TRIGGER_CONFIG=TRIGGER_CONFIG_DEFAULT.copy()
+            CAM_CONFIG=CAM_CONFIG_DEFAULT.copy()
+            cpath="config"+dtfile+".ini"  
     
     #configuration gets overriden with user input parsed arguments
     for key in override_keys:
@@ -201,7 +207,7 @@ def load_config():
     #saving the configuration to cpath
     with open(cpath, 'w') as configfile:
         configfile.write(dtstr+s.format(**config))
-        print("Configuration file saved.")
+        print("Configuration file saved/updated.")
     
     TRIGGER_CONFIG["cpath"]=cpath[:-4]   #used to name random times files
     CAM_CONFIG["count"]=TRIGGER_CONFIG["count"]
