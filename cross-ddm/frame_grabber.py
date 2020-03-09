@@ -1,6 +1,6 @@
 ''' 
 ===================================================================================================
-    Cross DDM random triggering and calculation of triggering times.
+    Cross DDM frame grabber.
     Copyright (C) 2019; Matej Arko, Andrej Petelin
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -387,7 +387,7 @@ def run_cameras(conf):
 
             im = image_converted.GetNDArray()
             image_result.Release()
-            return im.copy()
+            return im#.copy()
 
         try:
             for i in range(conf["count"]):
@@ -503,7 +503,7 @@ def queued_multi_frame_grabber(f,args = (), kwargs = {}):
         p.terminate()
     
 
-def _frame_grabber(trigger_config, cam_config):
+def frame_grabber(trigger_config, cam_config):
     '''
     Generator function that grabs the frames from the run_cameras function and yields them.
     If triggering is activated, it also starts the triggering, otherwise capturing is continuous.
@@ -542,8 +542,8 @@ if __name__ == '__main__':
     
     trigger_config, cam_config = config.load_config()
        
-    VIDEO = _frame_grabber(trigger_config,cam_config)
-    #VIDEO = queued_multi_frame_grabber(_frame_grabber, (trigger_config,cam_config))
+    VIDEO = frame_grabber(trigger_config,cam_config)
+    #VIDEO = queued_multi_frame_grabber(frame_grabber, (trigger_config,cam_config))
     
     video = show_video(VIDEO, id=0)   
 

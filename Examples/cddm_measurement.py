@@ -1,6 +1,6 @@
 ''' 
 ===================================================================================================
-    Cross DDM random triggering and calculation of triggering times.
+    Cross DDM measurement python example.
     Copyright (C) 2019; Matej Arko, Andrej Petelin
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,10 +22,11 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt	
     from cddm.video import apply_window, asarrays, fromarrays
     from cddm.window import blackman
-    from cddm import conf, iccorr_multi, normalize, log_merge ,icdiff_multi #ccorr_multi
+    from cddm import conf, iccorr_multi, normalize, log_merge
     from cddm.fft import rfft2
     from frame_grabber import _frame_grabber, queued_multi_frame_grabber
     from config import load_config
+    from trigger import run_simulation
     
     def norm_fft(video):
         for frames in video:
@@ -39,6 +40,7 @@ if __name__ == "__main__":
     w2 = blackman((512,512))
 
     trigger_config, cam_config = load_config()
+    
     t1,t2=run_simulation(trigger_config)
     
     PERIOD=trigger_config['n']*2

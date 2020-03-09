@@ -45,7 +45,7 @@ def read_trigger(arduino, conf = config.TRIGGER_CONFIG_DEFAULT):
     
     data = 0, conf["mode"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
     count = data[2]
-    arduino.write(struct.pack('<bbihhhhh',*data))
+    arduino.write(struct.pack('<bhihhhhh',*data))
     #arduino should write down the parameters in a single line
     line=arduino.readline().decode("utf-8").strip()
     print("Reading trigger times.")    
@@ -99,7 +99,7 @@ def start_trigger(arduino,conf = config.TRIGGER_CONFIG_DEFAULT):
     '''
     
     data = 1, conf["mode"], conf["count"], conf["deltat"], conf["n"], conf["twidth"], conf["swidth"], conf["sdelay"]
-    arduino.write(struct.pack('<bbihhhhh',*data))
+    arduino.write(struct.pack('<bhihhhhh',*data))
     line=arduino.readline().decode("utf-8").strip() #we should see a single line answer from arduino
     
     print("Trigger started.")
@@ -253,7 +253,9 @@ if __name__ == '__main__':
     #loading configuration using configuration parser and argument parser
     trigger_config, cam_config = config.load_config()
     
-    run_simulation(trigger_config)
+    #t1,t2=run_simulation(trigger_config)
+    
+    run_arduino(trigger_config)
 
      
 
