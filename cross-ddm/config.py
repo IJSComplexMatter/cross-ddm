@@ -1,6 +1,6 @@
 ''' 
 ===================================================================================================
-    Cross DDM random triggering and calculation of triggering times.
+    Cross DDM triggering and camera configuration.
     Copyright (C) 2019; Matej Arko, Andrej Petelin
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import datetime
 
 s = '''
 [TRIGGERING SETTINGS]
-# triggering mode, 0 for basic triggering mode, 1 for modified triggering mode
+# triggering mode, 0 - random t2, 1 - random t2 + zero modification, 2 - modulo t2, 3 - modulo t2 + zero modification
 mode = {mode}
 # count, total number of trigger signals for each of the cameras   
 count = {count}
@@ -73,7 +73,7 @@ cam2serial = {cam2serial}
 
 #Default settings
 TRIGGER_CONFIG_DEFAULT = {
-        "mode": 0,                  # 0 for basic triggering scheme, 1 for modified scheme
+        "mode": 0,                  # 0 - random t2, 1 - random t2 + zero modification, 2 - modulo t2, 3 - modulo t2 + zero modification
         "count" : 8192,             # total number of trigger signals for each of the cameras
         "deltat" : 30000,             # in microsecond minimum time delay between two triggers
         "n" : 1,                   # the 'n' parameter 
@@ -118,7 +118,7 @@ def get_args():
     group1.add_argument('-c','--conf', action="store", dest='cpath', required=False, help='Configuration file path',type=str)
     
     group2 = parser.add_argument_group('Triggering settings')   
-    group2.add_argument('-m','--mode', action="store", dest='mode', required=False, help='Triggering mode: 0 for basic triggering mode, 1 for modified triggering mode.',type=int)
+    group2.add_argument('-m','--mode', action="store", dest='mode', required=False, help='Triggering mode: 0 - random t2, 1 - random t2 + zero modification, 2 - modulo t2, 3 - modulo t2 + zero modification.',type=int)
     group2.add_argument('--count', action="store", dest='count', required=False, help='Total count of frames.',type=int)
     group2.add_argument('--deltat', action="store", dest='deltat', required=False, help='Minimum time delay in microseconds.',type=int)
     group2.add_argument('-n','--n', action="store", dest='n', required=False, help='The \'n\' parameter.',type=int)
@@ -175,15 +175,12 @@ def load_config():
     try:
         cpath=args.cpath
         conf.read_file(open(cpath))  
-        c_trigger=conf._sections['TRIGGERING SETTINGS'] 
-        c_cam=conf._sections['CAMERA SETTINGS']
-        TRIGGER_CONFIG={key: int(value) for key, value in c_trigger.items()}
-        CAM_CONFIG={key: int(value) for key, value in c_cam.items()}
+
         
     except:
         try:   
             cpath=args.cpath
-            print("Configuration file doesnt not yet exist. Created a configuration file with default settings.") 
+            print("Configuration file does not yet exist. Created a configuration file with default settings.") 
             TRIGGER_CONFIG=TRIGGER_CONFIG_DEFAULT.copy()
             CAM_CONFIG=CAM_CONFIG_DEFAULT.copy()
         except:
@@ -191,6 +188,11 @@ def load_config():
             TRIGGER_CONFIG=TRIGGER_CONFIG_DEFAULT.copy()
             CAM_CONFIG=CAM_CONFIG_DEFAULT.copy()
             cpath="config"+dtfile+".ini"  
+    else:
+        c_trigger=conf._sections['TRIGGERING SETTINGS'] 
+        c_cam=conf._sections['CAMERA SETTINGS']
+        TRIGGER_CONFIG={key: int(value) for key, value in c_trigger.items()}
+        CAM_CONFIG={key: int(value) for key, value in c_cam.items()}
     
     #configuration gets overriden with user input parsed arguments
     for key in override_keys:
