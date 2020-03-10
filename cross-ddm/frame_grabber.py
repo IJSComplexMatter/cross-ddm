@@ -1,4 +1,4 @@
-''' 
+'''
 ===================================================================================================
     Cross DDM frame grabber.
     Copyright (C) 2019; Matej Arko, Andrej Petelin
@@ -28,18 +28,18 @@ import time
 def print_device_info(cam):
     '''
     Prints device info of a given camera.
-    
+
     Parameters
     ----------
     cam : PySpin.PySpin.CameraPtr
         Camera Object.
-        
+
     Returns
     -------
     None.
-    
+
     '''
-    
+
     print("\n*** DEVICE INFORMATION ***\n")
     try:
         nodemap = cam.GetTLDeviceNodeMap()
@@ -91,7 +91,7 @@ def configure_exposure(cam,config):
 
 def configure_framerate(cam,config):
     '''
-    Sets framerate for the given camera and settings. 
+    Sets framerate for the given camera and settings.
     If framerate setting is larger than possible, fastest possible framerate is set.
 
     Parameters
@@ -245,7 +245,7 @@ def configure_gain(cam,config):
 def configure_gamma(cam,config):
     '''
     Enables or disables gamma for the given camera.
-     
+
     Parameters
     ----------
     cam : PySpin.PySpin.CameraPtr
@@ -285,7 +285,7 @@ def configure_trigger(cam,config):
     None.
 
     '''
-    
+
     print("\n*** CONFIGURING TRIGGER ***\n")
     try:
         if cam.TriggerMode.GetAccessMode() != PySpin.RW:
@@ -304,16 +304,17 @@ def configure_trigger(cam,config):
             print("Trigger mode turned back on.")
     except PySpin.SpinnakerException as ex:
         print("Error: %s" % ex)
-   
-    
-def configure_camera(cam,config):
+
+def configure_image_reverse(cam, i, config):
     '''
-    Function configures a camera with given configuration and prints the device info.
+    Function reverses the image on a specified camera either in X or Y direction.
 
     Parameters
     ----------
     cam : PySpin.PySpin.CameraPtr
         Camera object.
+    i : int
+        Camera index.
     config : dict
         Camera settings.
 
@@ -323,6 +324,47 @@ def configure_camera(cam,config):
 
     '''
     
+    if (i+1) == config["reversecam"]:
+        if config["reversedirection"]==1:
+            print("\n*** CONFIGURING CUSTOM IMAGE SETTINGS on camera"+str(i)+": Reversing Y ***\n")
+            try:
+                result=True
+                if cam.ReverseY.GetAccessMode() == PySpin.RW:
+                    reverse_y_to_set = True;
+                    cam.ReverseY.SetValue(reverse_y_to_set)
+            except PySpin.SpinnakerException as ex:
+                print("Error: %s" % ex)
+        else:
+            print("\n*** CONFIGURING CUSTOM IMAGE SETTINGS on camera"+str(i)+": Reversing X ***\n")
+            try:
+                result=True
+                if cam.ReverseX.GetAccessMode() == PySpin.RW:
+                    reverse_x_to_set = True;
+                    cam.ReverseX.SetValue(reverse_x_to_set)
+            except PySpin.SpinnakerException as ex:
+                print("Error: %s" % ex)
+    else: pass
+
+
+def configure_camera(cam,i,config):
+    '''
+    Function configures a camera with given configuration and prints the device info.
+
+    Parameters
+    ----------
+    cam : PySpin.PySpin.CameraPtr
+        Camera object.
+    i : int
+        Camera index.
+    config : dict
+        Camera settings.
+
+    Returns
+    -------
+    None.
+
+    '''
+
     print_device_info(cam)
     configure_image_format(cam,config)
     configure_gain(cam,config)
@@ -331,11 +373,12 @@ def configure_camera(cam,config):
     configure_exposure(cam,config)
     configure_framerate(cam,config)
     configure_trigger(cam,config)
+    configure_image_reverse(cam, i, config)
 
 
 def run_cameras(conf):
     '''
-    Generator function that initiates the connected cameras with the specified configuration 
+    Generator function that initiates the connected cameras with the specified configuration
     and yields a tuple of captured frames.
 
     Parameters
@@ -349,36 +392,39 @@ def run_cameras(conf):
         Tuple of captured ndarray frames.
 
     '''
-    
+
     serials=[conf["cam1serial"],conf["cam2serial"]]
-    
+
     system=PySpin.System.GetInstance()
     cam_list = system.GetCameras()
     num_cameras = cam_list.GetSize()
     cams=[]
     
-    for i in range(num_cameras):
+    for i, serial in enumerate(serials):
         try:
-            cam=cam_list.GetBySerial(str(serials[i]))
+            cam=cam_list.GetBySerial(str(serial))
             cam.Init()
-            configure_camera(cam,conf)
+            configure_camera(cam,i,conf)
             cams.append(cam)
             cam.AcquisitionMode.SetValue(PySpin.AcquisitionMode_Continuous)
             cam.BeginAcquisition()
         except:
-            print("WARNING: Failed to open camera "+str(i+1)+" by serial number.")
-    
-    if len(cams) == 0:
-        for i in range(num_cameras):
-            try:
-                cam=cam_list.GetByIndex(i)
-                cam.Init()
-                configure_camera(cam,conf)
-                cams.append(cam)
-                cam.AcquisitionMode.SetValue(PySpin.AcquisitionMode_Continuous)
-                cam.BeginAcquisition()
-            except:
-                print("WARNING: Failed to open and set camera "+str(i+1)+ " by index.") 
+            print(sys.exc_info())
+            print("Could not open and configure camera " +str(i+1)+" with serial: "+str(serial))
+            print("Exiting...")
+            sys.exit()
+
+    # if len(cams) == 0:
+    #     for i in range(num_cameras):
+    #         try:
+    #             cam=cam_list.GetByIndex(i)
+    #             cam.Init()
+    #             configure_camera(cam,conf)
+    #             cams.append(cam)
+    #             cam.AcquisitionMode.SetValue(PySpin.AcquisitionMode_Continuous)
+    #             cam.BeginAcquisition()
+    #         except:
+    #             print("WARNING: Failed to open and set camera "+str(i+1)+ " by index.")
 
     def f(system,cams,cam_list):
         def _get_frame(cam):
@@ -387,7 +433,7 @@ def run_cameras(conf):
 
             im = image_converted.GetNDArray()
             image_result.Release()
-            return im#.copy()
+            return im
 
         try:
             for i in range(conf["count"]):
@@ -400,7 +446,7 @@ def run_cameras(conf):
 
         finally:
             print("Closing cameras...")
-            for cam in cams:    
+            for cam in cams:
                 cam.EndAcquisition()
                 cam.DeInit()
                 del cam
@@ -432,7 +478,7 @@ def _queued_frame_grabber(f,server_queue,  args = (), kwargs = {}):
     None.
 
     '''
-    
+
     video = f(*args,**kwargs) #f is the _frame_grabber function in our case
 
     try:
@@ -440,14 +486,14 @@ def _queued_frame_grabber(f,server_queue,  args = (), kwargs = {}):
         for frames in video:
             server_queue.put(frames)
             i+=1
-            
+
             #loop needs to be to be stopped by force or program crashes
-            if i == args[0]["count"]: 
+            if i == args[0]["count"]:
                 break
 
     except Exception as ex:
         print('Error: {}'.format(ex))
-        
+
     finally:
         server_queue.put(None)
         #program has to wait for the queue to empty
@@ -475,13 +521,13 @@ def queued_multi_frame_grabber(f,args = (), kwargs = {}):
         Tuple of captured ndarray frames.
 
     '''
-    
+
     server_queue = Queue()
     p = Process(target=_queued_frame_grabber, args=(f,server_queue), kwargs = {"args" : args, "kwargs" : kwargs})
     p.daemon=True
     p.start()
     i = 0
-    while True: 
+    while True:
         try:
             frames = server_queue.get()
             #print("qsize", server_queue.qsize())
@@ -497,11 +543,11 @@ def queued_multi_frame_grabber(f,args = (), kwargs = {}):
     try:
         print('joining...')
         p.join()
-        
+
     except KeyboardInterrupt:
         print('Terminating...')
         p.terminate()
-    
+
 
 def frame_grabber(trigger_config, cam_config):
     '''
@@ -521,35 +567,34 @@ def frame_grabber(trigger_config, cam_config):
         Tuple of captured ndarray frames.
 
     '''
-    
+
     video = run_cameras(cam_config)
-    
+
     if cam_config['trigger']==1:
         run_arduino(trigger_config)
     #else capturing is continuous
-    
+
     for i,frames in enumerate(video):
         yield frames
-        
+
 
 if __name__ == '__main__':
-    
+
     import config
     from cddm.video import show_video, play
     import cddm
     from cddm.fft import show_alignment_and_focus
     cddm.conf.set_cv2(1)
-    
+
     trigger_config, cam_config = config.load_config()
-       
+
     VIDEO = frame_grabber(trigger_config,cam_config)
     #VIDEO = queued_multi_frame_grabber(frame_grabber, (trigger_config,cam_config))
-    
-    video = show_video(VIDEO, id=0)   
+
+    video = show_video(VIDEO, id=0)
 
     f_video = show_alignment_and_focus(video, id=0, clipfactor=0.1)
     f_video = play(f_video, fps = 15)
 
     for i,frames in enumerate(f_video):
         print ("Frame ",i)
-
