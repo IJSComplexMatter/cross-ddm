@@ -32,13 +32,13 @@ int sdelay;             // strobe delay in microseconds
 int p1;                 // first delay
 int p2;                 // last delay
 int P;                  // intersection of trigger and strobe pulse widths
+int SUM;                // Sum of p1, P and p2
 long deltat;            // minimal time delay in microseconds
 unsigned long N;        // total frame count
 int zero_trigger;       // random integer in the interval [0,2n)       
 bool triggering;        // true if only triggering is performed
 bool modified_scheme;   // true for the modified scheme from the article
 bool modulo;            // true for the modulo t2 instead of random t2
-int SUM;                // Sum of p1, P and p2
 
 //timer
 byte _tccr1a_save; //will be used to backup default settings
@@ -47,8 +47,10 @@ volatile unsigned long _overflow_count;
 unsigned long _total_count;
 unsigned long t; //timer count with resolution 4us
 
-
-//Port events bytes
+//Port bytes
+byte c1;
+byte c2;
+byte s;
 byte b01;
 byte b02;
 byte b03;
@@ -58,6 +60,7 @@ byte b13;
 byte b21;
 byte b22;
 byte b23;
+
 
 // this is the data needed to control the trigger 17 bytes long
 struct triggerData{ 
@@ -145,6 +148,10 @@ void timer_reset()
 //PULSE SHAPE AND PORT EVENTS FUNCTION
 
 int find_shape(){
+
+  // p1 and p2 are 4 where they shoulde be 0!
+  // In this case this is due to bad behaviour od delayMicroseconds(0)
+  // Additional delay does not change the overall accuracy of triggering times, because they are all shifted the same
   
   if (sdelay < 0){
     
@@ -155,9 +162,9 @@ int find_shape(){
       P=pws+sdelay;
       p2=pw-P;
       
-      b01=B00010000;
-      b02=B00011100;
-      b03=B00001100;
+      b01=s;
+      b02=s|c1|c2;
+      b03=c1|c2;
     }
     
     else if (-sdelay + pw < pws){
@@ -165,9 +172,9 @@ int find_shape(){
       P=pw;
       p2=pws-P+sdelay;
 
-      b01=B00010000;
-      b02=B00011100;
-      b03=B00010000;
+      b01=s;
+      b02=s|c1|c2;
+      b03=s;
     }
     
     else if (-sdelay + pw == pws){
@@ -175,8 +182,8 @@ int find_shape(){
       P=pw;
       p2=4;
 
-      b01=B00010000;
-      b02=B00011100;
+      b01=s;
+      b02=s|c1|c2;
       b03=B00000000;
     }
   }
@@ -190,9 +197,9 @@ int find_shape(){
       P=pw-sdelay;
       p2=pws-P;
       
-      b01=B00001100;
-      b02=B00011100;
-      b03=B00010000;
+      b01=c1|c2;
+      b02=s|c1|c2;
+      b03=s;
     }
     
     else if (sdelay + pws < pw){
@@ -200,9 +207,9 @@ int find_shape(){
       P=pws;
       p2=pw-P-sdelay;
       
-      b01=B00001100;
-      b02=B00011100;
-      b03=B00001100;
+      b01=c1|c2;
+      b02=s|c1|c2;
+      b03=c1|c2;
     }
 
     else if(sdelay + pws == pw){
@@ -210,8 +217,8 @@ int find_shape(){
       P=pws;
       p2=4;
       
-      b01=B00001100;
-      b02=B00011100;
+      b01=c1|c2;
+      b02=s|c1|c2;
       b03=B00000000;
     }
   }
@@ -226,7 +233,7 @@ int find_shape(){
       p2=4;
 
       b01=B00000000;
-      b02=B00001100;
+      b02=c1|c2;
       b03=B00000000;
     }
     
@@ -236,7 +243,7 @@ int find_shape(){
       p2=4;
       
       b01=B00000000;
-      b02=B00011100;
+      b02=s|c1|c2;
       b03=B00000000;
     }
     
@@ -246,8 +253,8 @@ int find_shape(){
       p2=pws-pw;
       
       b01=B00000000;
-      b02=B00011100;
-      b03=B00010000;
+      b02=s|c1|c2;
+      b03=s;
     }
 
     else if(pws < pw){
@@ -256,18 +263,18 @@ int find_shape(){
       p2=pw-pws;
       
       b01=B00000000;
-      b02=B00011100;
-      b03=B00001100;
+      b02=s|c1|c2;
+      b03=c1|c2;
     }
   }
 
-  b11 = b01 & B11110111;
-  b12 = b02 & B11110111;
-  b13 = b03 & B11110111;
+  b11 = b01 & (~c2); // turn off camera 2
+  b12 = b02 & (~c2);
+  b13 = b03 & (~c2);
 
-  b21 = b01 & B11111011;
-  b22 = b02 & B11111011; 
-  b23 = b03 & B11111011;  
+  b21 = b01 & (~c1); // turn off camera 1
+  b22 = b02 & (~c1); 
+  b23 = b03 & (~c1);  
 }
 
 
@@ -371,11 +378,14 @@ void setup() {
   }
   Serial.println("CDDM Trigger - v1.0");
   
-  DDRD = B00011100; //Port register 
-  timer_setup();  
+  timer_setup();
+
+  c1 = B00000100; // first camera port
+  c2 = B00001000; // second camera port
+  s = B00010000;  // strobe port
+
+  DDRD = c1|c2|s; //Port register 
 }
-
-
 
 
 void loop() {
