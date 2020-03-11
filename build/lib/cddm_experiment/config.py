@@ -13,6 +13,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ===================================================================================================
+
 '''
 
 import configparser
@@ -73,6 +74,7 @@ cam2serial = {cam2serial}
 reversecam = {reversecam}
 # x for reverse in x direction, y for reverse in y direction
 reversedirection = {reversedirection}
+
 '''
 
 #Default settings

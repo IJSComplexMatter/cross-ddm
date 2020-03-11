@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Config module &mdash; c-DDM experiment 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="c-DDM experiment package" href="cddm_experiment.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> c-DDM experiment
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Description</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cddm_experiment.html">c-DDM experiment package</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cddm_experiment.frame_grabber">Frame grabber module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cddm_experiment.trigger">Trigger module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">c-DDM experiment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="cddm_experiment.html">c-DDM experiment package</a> &raquo;</li>
+        
+      <li>Config module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cddm_experiment.config">
+<span id="config-module"></span><h1>Config module<a class="headerlink" href="#module-cddm_experiment.config" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<p>Cross DDM triggering and camera configuration.</p>
+<p>Copyright (C) 2019; Matej Arko, Andrej Petelin</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="cddm_experiment.config.get_args">
+<code class="sig-prename descclassname">cddm_experiment.config.</code><code class="sig-name descname">get_args</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.config.get_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates argument parser and returns input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Namespace object containing input data.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.config.load_config">
+<code class="sig-prename descclassname">cddm_experiment.config.</code><code class="sig-name descname">load_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.config.load_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads settings from the specified configuration file if it exists. If file is not specified or if it doesnt exist, it creates a file
+with default parameters. Read parameters are overriden and saved when the user inputs different parameters in the console.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>TRIGGER_CONFIG</strong> (<em>dict</em>) – Triggering configuration.</p></li>
+<li><p><strong>CAM_CONFIG</strong> (<em>dict</em>) – Camera configuration.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cddm_experiment.frame_grabber">
+<span id="frame-grabber-module"></span><h1>Frame grabber module<a class="headerlink" href="#module-cddm_experiment.frame_grabber" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<p>Cross DDM frame grabber.</p>
+<p>Copyright (C) 2019; Matej Arko, Andrej Petelin</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_blacklevel">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_blacklevel</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_blacklevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables or disables black level clamping for the given cameras.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_camera">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_camera</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">i</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_camera" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function configures a camera with given configuration and prints the device info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera object.</p></li>
+<li><p><strong>i</strong> (<em>int</em>) – Camera index.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_exposure">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_exposure</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_exposure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets exposure for the given camera and settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_framerate">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_framerate</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_framerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets framerate for the given camera and settings.
+If framerate setting is larger than possible, fastest possible framerate is set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_gain">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_gain</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_gain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables or disables auto gain or sets gain value for the given camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_gamma">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_gamma</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables or disables gamma for the given camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_image_format">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_image_format</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_image_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets pixel format, ADC bit depth, image width, height and offset for the given camera and settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_image_reverse">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_image_reverse</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">i</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_image_reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function reverses the image on a specified camera either in X or Y direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera object.</p></li>
+<li><p><strong>i</strong> (<em>int</em>) – Camera index.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.configure_trigger">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">configure_trigger</code><span class="sig-paren">(</span><em class="sig-param">cam</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.configure_trigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables or disables triggering for the given camera and sets trigger source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.frame_grabber">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">frame_grabber</code><span class="sig-paren">(</span><em class="sig-param">trigger_config</em>, <em class="sig-param">cam_config</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.frame_grabber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator function that grabs the frames from the run_cameras function and yields them.
+If triggering is activated, it also starts the triggering, otherwise capturing is continuous.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trigger_config</strong> (<em>dict</em>) – Triggering settings.</p></li>
+<li><p><strong>cam_config</strong> (<em>dict</em>) – Camera settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><strong>frames</strong> (<em>tuple</em>) – Tuple of captured ndarray frames.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.print_device_info">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">print_device_info</code><span class="sig-paren">(</span><em class="sig-param">cam</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.print_device_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints device info of a given camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cam</strong> (<em>PySpin.PySpin.CameraPtr</em>) – Camera Object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.queued_multi_frame_grabber">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">queued_multi_frame_grabber</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">args=()</em>, <em class="sig-param">kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.queued_multi_frame_grabber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator function that starts multiprocessing Process() and Queue(),
+retrieves frames from the multiprocessing queue and yields them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>function</em>) – A generator function that yields frames which are put into the queue.</p></li>
+<li><p><strong>args</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – DESCRIPTION. The default is ().</p></li>
+<li><p><strong>kwargs</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – DESCRIPTION. The default is {}.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><strong>frames</strong> (<em>tuple</em>) – Tuple of captured ndarray frames.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.frame_grabber.run_cameras">
+<code class="sig-prename descclassname">cddm_experiment.frame_grabber.</code><code class="sig-name descname">run_cameras</code><span class="sig-paren">(</span><em class="sig-param">conf</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.frame_grabber.run_cameras" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator function that initiates the connected cameras with the specified configuration
+and yields a tuple of captured frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conf</strong> (<em>dict</em>) – Camera configuration dictionary.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>tuple</em> – Tuple of captured ndarray frames.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cddm_experiment.trigger">
+<span id="trigger-module"></span><h1>Trigger module<a class="headerlink" href="#module-cddm_experiment.trigger" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<p>Cross DDM random triggering and calculation of triggering times.</p>
+<p>Copyright (C) 2019; Matej Arko, Andrej Petelin</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="cddm_experiment.trigger.open_arduino">
+<code class="sig-prename descclassname">cddm_experiment.trigger.</code><code class="sig-name descname">open_arduino</code><span class="sig-paren">(</span><em class="sig-param">port=None</em>, <em class="sig-param">baudrate=115200</em>, <em class="sig-param">timeout=2</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.trigger.open_arduino" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates a connection to an arduino on an available port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>port</strong> (<em>str</em><em>, </em><em>optional</em>) – Device name or None. The default is None.</p></li>
+<li><p><strong>baudrate</strong> (<em>int</em><em>, </em><em>optional</em>) – Baud rate such as 9600 or 115200 etc. The default is 115200.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em>, </em><em>optional</em>) – Set a read timeout value in seconds. The default is 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>Exception</strong> – In case of no arduino found on any port or unknown device.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>arduino</strong> – An instance of serial.Serial, an opened serial port.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>serial</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.trigger.read_trigger">
+<code class="sig-prename descclassname">cddm_experiment.trigger.</code><code class="sig-name descname">read_trigger</code><span class="sig-paren">(</span><em class="sig-param">arduino</em>, <em class="sig-param">conf={'count': 8192</em>, <em class="sig-param">'deltat': 30000</em>, <em class="sig-param">'mode': 0</em>, <em class="sig-param">'n': 1</em>, <em class="sig-param">'sdelay': -20</em>, <em class="sig-param">'swidth': 80</em>, <em class="sig-param">'twidth': 30}</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.trigger.read_trigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads trigger times from arduino, given the configuration parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arduino</strong> (<em>serial</em>) – An instance of serial.Serial, an opened serial port as returned by the
+open_arduino function.</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – A dictionary of configuration parameters for the trigger. See DEFAULT_TRIGGER
+for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>t1, t2</strong> – A tuple of two ndarrays of trigger times for camera 1 and 2. Dtype of
+the output arrays is ‘int’ and describes real times in units of microseconds.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray, ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.trigger.run_arduino">
+<code class="sig-prename descclassname">cddm_experiment.trigger.</code><code class="sig-name descname">run_arduino</code><span class="sig-paren">(</span><em class="sig-param">conf</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.trigger.run_arduino" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the arduino and starts triggering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conf</strong> (<em>dict</em>) – Triggering settings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.trigger.run_simulation">
+<code class="sig-prename descclassname">cddm_experiment.trigger.</code><code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">conf</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.trigger.run_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the simulation of random times on the arduino.
+Times are saved in a text file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conf</strong> (<em>dict</em>) – Triggering settings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>t1</strong> (<em>ndarray</em>) – Array of random times.</p></li>
+<li><p><strong>t2</strong> (<em>ndarray</em>) – Array of random times.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cddm_experiment.trigger.start_trigger">
+<code class="sig-prename descclassname">cddm_experiment.trigger.</code><code class="sig-name descname">start_trigger</code><span class="sig-paren">(</span><em class="sig-param">arduino</em>, <em class="sig-param">conf={'count': 8192</em>, <em class="sig-param">'deltat': 30000</em>, <em class="sig-param">'mode': 0</em>, <em class="sig-param">'n': 1</em>, <em class="sig-param">'sdelay': -20</em>, <em class="sig-param">'swidth': 80</em>, <em class="sig-param">'twidth': 30}</em><span class="sig-paren">)</span><a class="headerlink" href="#cddm_experiment.trigger.start_trigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the triggering by sending a command to the arduino and reads the answer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arduino</strong> (<em>serial</em>) – An instance of serial.Serial, an opened serial port as returned by the
+open_arduino function.</p></li>
+<li><p><strong>conf</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – DESCRIPTION. The default is config.TRIGGER_CONFIG_DEFAULT.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="cddm_experiment.html" class="btn btn-neutral float-left" title="c-DDM experiment package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Matej Arko, Andrej Petelin
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
