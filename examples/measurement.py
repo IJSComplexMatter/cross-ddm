@@ -18,15 +18,16 @@
 import numpy as np
 
 if __name__ == "__main__":
-
+    
+    import cddm_experiment
     import matplotlib.pyplot as plt
     from cddm.video import apply_window, asarrays, fromarrays
     from cddm.window import blackman
     from cddm import conf, iccorr_multi, normalize, log_merge
     from cddm.fft import rfft2
-    from frame_grabber import frame_grabber, queued_multi_frame_grabber
-    from config import load_config
-    from trigger import run_simulation
+    from cddm_experiment.frame_grabber import frame_grabber, queued_multi_frame_grabber
+    from cddm_experiment.config import load_config
+    from cddm_experiment.trigger import run_simulation
 
     def norm_fft(video):
         for frames in video:

@@ -14,13 +14,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ===================================================================================================
 """
-
-import config 
-from trigger import run_arduino, run_simulation
+import cddm_experiment
+from cddm_experiment.config import load_config
+from cddm_experiment.trigger import run_arduino, run_simulation
 
 #loading configuration using both config parser and argument parser
 #both camera and triggering configuration is read
-trigger_config, cam_config = config.load_config()
+trigger_config, cam_config = load_config()
 
 #simulating times, times are saved on the disk automatically, t1 and t2 are not used here   
 t1,t2=run_simulation(trigger_config)

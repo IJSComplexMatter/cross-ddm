@@ -13,6 +13,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ===================================================================================================
+
 '''
 
 #numpy needs to be imported before Pyspin or an error is shown: The ordinal 242 could not be located in the dynamic link library
@@ -328,7 +329,6 @@ def configure_image_reverse(cam, i, config):
         if config["reversedirection"]==1:
             print("\n*** CONFIGURING CUSTOM IMAGE SETTINGS on camera"+str(i)+": Reversing Y ***\n")
             try:
-                result=True
                 if cam.ReverseY.GetAccessMode() == PySpin.RW:
                     reverse_y_to_set = True;
                     cam.ReverseY.SetValue(reverse_y_to_set)
@@ -337,7 +337,6 @@ def configure_image_reverse(cam, i, config):
         else:
             print("\n*** CONFIGURING CUSTOM IMAGE SETTINGS on camera"+str(i)+": Reversing X ***\n")
             try:
-                result=True
                 if cam.ReverseX.GetAccessMode() == PySpin.RW:
                     reverse_x_to_set = True;
                     cam.ReverseX.SetValue(reverse_x_to_set)
@@ -397,7 +396,6 @@ def run_cameras(conf):
 
     system=PySpin.System.GetInstance()
     cam_list = system.GetCameras()
-    num_cameras = cam_list.GetSize()
     cams=[]
     
     for i, serial in enumerate(serials):
@@ -413,18 +411,6 @@ def run_cameras(conf):
             print("Could not open and configure camera " +str(i+1)+" with serial: "+str(serial))
             print("Exiting...")
             sys.exit()
-
-    # if len(cams) == 0:
-    #     for i in range(num_cameras):
-    #         try:
-    #             cam=cam_list.GetByIndex(i)
-    #             cam.Init()
-    #             configure_camera(cam,conf)
-    #             cams.append(cam)
-    #             cam.AcquisitionMode.SetValue(PySpin.AcquisitionMode_Continuous)
-    #             cam.BeginAcquisition()
-    #         except:
-    #             print("WARNING: Failed to open and set camera "+str(i+1)+ " by index.")
 
     def f(system,cams,cam_list):
         def _get_frame(cam):

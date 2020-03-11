@@ -20,14 +20,14 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
 
-
+    import cddm_experiment
     from cddm.video import apply_window
     from cddm.window import blackman
     from cddm import conf, iccorr_multi, normalize, log_merge
     from cddm.fft import rfft2#mkl_rfft2
-    from frame_grabber import frame_grabber, queued_multi_frame_grabber
-    from trigger import run_simulation
-    from config import load_config
+    from cddm_experiment.frame_grabber import frame_grabber, queued_multi_frame_grabber
+    from cddm_experiment.trigger import run_simulation
+    from cddm_experiment.config import load_config
 
 
     conf.set_verbose(2)

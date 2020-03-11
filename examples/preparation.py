@@ -15,14 +15,15 @@
 ===================================================================================================
 '''
 
-import config
-from cddm.video import show_video, play
+import cddm_experiment
+from cddm_experiment.config import load_config
 import cddm
+from cddm.video import show_video, play
 from cddm.fft import show_alignment_and_focus
-from frame_grabber import frame_grabber
+from cddm_experiment.frame_grabber import frame_grabber, queued_multi_frame_grabber
 cddm.conf.set_cv2(1)
 
-trigger_config, cam_config = config.load_config()
+trigger_config, cam_config = load_config()
    
 VIDEO = frame_grabber(trigger_config,cam_config)
 #VIDEO = queued_multi_frame_grabber(frame_grabber, (trigger_config,cam_config))
