@@ -1,5 +1,5 @@
 # c-DDM experiment
-In this repository you will find instructions, a python package, arduino code and python examples for performing a Cross-Differential Dynamic Microscopy experiment. Repository is accompanying the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)).
+In this repository you will find instructions, a python package, arduino code and python examples for performing a Cross-Differential Dynamic Microscopy experiment. Repository is accompanying the article on [Cross-Differential Dynamic Microscopy](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract).
 
 ### The method
 
@@ -21,7 +21,7 @@ In the repository we included:
 ### Prerequisites
 
 Software requirements:
-* Python 3.7 with packages Numpy, Numba, PySerial, [cddm](https://github.com/IJSComplexMatter/cddm)
+* Python 3.7 with packages numpy, numba, multiprocessing, pyserial, [cddm](https://github.com/IJSComplexMatter/cddm)
 * Arduino Software (IDE)
 
 ### Table of contents
