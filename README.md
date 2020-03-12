@@ -1,7 +1,7 @@
-# c-DDM experiment package
-In this repository you will find instructions, a python package, arduino code and examples for performing a Cross-Differential Dynamic Microscopy experiment. Repository is accompanying the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)).
+# c-DDM experiment
+In this repository you will find instructions, a python package, arduino code and python examples for performing a Cross-Differential Dynamic Microscopy experiment. Repository is accompanying the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)).
 
-### Summary
+### The method
 
 In the article we demonstrate the use of a dual-camera-equipped microscope for the study of the wavevector-dependent dynamics of soft matter. We use two randomly triggered cameras to acquire two sequences of images of the same region in the sample. From the two data sets we calculate cross-image differences and Fourier analyze them as a function of time delay between the two images. We show that this technique can greatly decrease the time delay, which allows us to measure fast dynamics at larger wavevectors that could not have been performed with a single camera setup.
 
@@ -21,9 +21,8 @@ In the repository we included:
 ### Prerequisites
 
 Software requirements:
-* Python 3 with packages Numpy, Numba, PySerial
+* Python 3.7 with packages Numpy, Numba, PySerial, [cddm](https://github.com/IJSComplexMatter/cddm)
 * Arduino Software (IDE)
-* [**eRCaGuy_TimerCounter** ](https://github.com/ElectricRCAircraftGuy/eRCaGuy_TimerCounter) Arduino library
 
 ### Table of contents
 
