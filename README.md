@@ -1,6 +1,5 @@
-# c-DDM triggering
-
-In this repository you will find code and examples to accompany the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)). 
+# c-DDM experiment package
+In this repository you will find instructions, a python package, arduino code and examples for performing a Cross-Differential Dynamic Microscopy experiment. Repository is accompanying the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)).
 
 ### Summary
 
@@ -9,11 +8,13 @@ In the article we demonstrate the use of a dual-camera-equipped microscope for t
 ### What is inside
 
 In the repository we included:
-* Description of the experimental system and instructions for measurements
 * Arduino code for the random triggering of cameras and its simulation,
-* A Python script for controlling the arduino via serial port
-* A Python script for camera alignment and focusing for FLIR cameras (Spinnaker SDK)
-* A Python script for frame grabbing and analysis for FLIR cameras (Spinnaker SDK)
+* An installable Python package called cddm_experiment that consists of three modules:
+	* trigger.py (arduino communication, triggering and random times simulation)
+	* frame_grabber.py (camera communication and capturing with FLIR USB cameras)
+	* config.py (camera and triggering configuration)
+* cddm_experiment documentation
+* A series of standalone example python scripts
 
 ## Instructions
 
