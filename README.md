@@ -1,28 +1,28 @@
-# c-DDM triggering
+# c-DDM experiment
+In this repository you will find instructions, a python package, arduino code and python examples for performing a Cross-Differential Dynamic Microscopy experiment. Repository is accompanying the article on [Cross-Differential Dynamic Microscopy](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract).
 
-In this repository you will find code and examples to accompany the article on Cross-Differential Dynamic Microscopy ([link](https://pubs.rsc.org/en/content/articlelanding/2019/sm/c9sm00121b#!divAbstract)). 
-
-### Summary
+### The method
 
 In the article we demonstrate the use of a dual-camera-equipped microscope for the study of the wavevector-dependent dynamics of soft matter. We use two randomly triggered cameras to acquire two sequences of images of the same region in the sample. From the two data sets we calculate cross-image differences and Fourier analyze them as a function of time delay between the two images. We show that this technique can greatly decrease the time delay, which allows us to measure fast dynamics at larger wavevectors that could not have been performed with a single camera setup.
 
 ### What is inside
 
 In the repository we included:
-* Description of the experimental system and instructions for measurements
 * Arduino code for the random triggering of cameras and its simulation,
-* A Python script for controlling the arduino via serial port
-* A Python script for camera alignment and focusing for FLIR cameras (Spinnaker SDK)
-* A Python script for frame grabbing and analysis for FLIR cameras (Spinnaker SDK)
+* An installable Python package called cddm_experiment that consists of three modules:
+	* trigger.py (arduino communication, triggering and random times simulation)
+	* frame_grabber.py (camera communication and capturing with FLIR USB cameras)
+	* config.py (camera and triggering configuration)
+* cddm_experiment documentation
+* A series of standalone example python scripts
 
 ## Instructions
 
 ### Prerequisites
 
 Software requirements:
-* Python 3 with packages Numpy, Numba, PySerial
+* Python 3.7 with packages numpy, numba, multiprocessing, pyserial, [cddm](https://github.com/IJSComplexMatter/cddm)
 * Arduino Software (IDE)
-* [**eRCaGuy_TimerCounter** ](https://github.com/ElectricRCAircraftGuy/eRCaGuy_TimerCounter) Arduino library
 
 ### Table of contents
 

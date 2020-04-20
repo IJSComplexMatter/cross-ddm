@@ -567,9 +567,14 @@ void loop() {
       t1=(r1*deltat);
       t2=(r2*deltat);
       
-      zero_trigger=random(0,2*n);
-      
-      if ((zero_trigger==0) && (modified_scheme == true)){
+      if (modified_scheme == true){
+        zero_trigger=random(0,2*n);
+      }
+      else{
+        zero_trigger = 1;
+      }
+     
+      if (zero_trigger == 0){
         //t2 is set to t1 with a probability of 1/2n
         t2=t1;
       }
