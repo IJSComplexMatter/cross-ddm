@@ -14,6 +14,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ===================================================================================================
 """
+
 import cddm_experiment
 from cddm_experiment.config import load_config
 from cddm_experiment.trigger import run_arduino, run_simulation

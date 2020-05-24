@@ -23,7 +23,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from cddm.video import apply_window, asarrays, fromarrays
     from cddm.window import blackman
-    from cddm import conf, iccorr_multi, normalize, log_merge
+    from cddm import conf, iccorr_multi, normalize_multi, log_merge
     from cddm.fft import rfft2
     from cddm_experiment.frame_grabber import frame_grabber, queued_multi_frame_grabber
     from cddm_experiment.config import load_config
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     data, bg = iccorr_multi(fdual_video, t1, t2, period = PERIOD, level = 5,
                               chunk_size = 256, show = True, auto_background = False, binning =  True, return_background = True)
 
-    cfast, cslow = normalize(data)
+    cfast, cslow = normalize_multi(data)
     x, logdata = log_merge(cfast,cslow)
 
     np.save('x.npy',x)

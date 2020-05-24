@@ -570,21 +570,18 @@ def frame_grabber(trigger_config, cam_config):
 
 if __name__ == '__main__':
 
-    import config
-    from cddm.video import show_video, play
-    import cddm
-    from cddm.fft import show_alignment_and_focus
-    cddm.conf.set_cv2(1)
+    from cddm_experiment.config import load_config
+    from cddm.video import show_video, play, show_fft
 
-    trigger_config, cam_config = config.load_config()
+    trigger_config, cam_config = load_config()
+       
+    video = frame_grabber(trigger_config,cam_config)
+    video = queued_multi_frame_grabber(frame_grabber, (trigger_config,cam_config))
+    
+    video=show_video(video, id=0)
+    #video=show_diff(video)
+    video=show_fft(video)   
+    video=play(video, fps=30)
 
-    VIDEO = frame_grabber(trigger_config,cam_config)
-    #VIDEO = queued_multi_frame_grabber(frame_grabber, (trigger_config,cam_config))
-
-    video = show_video(VIDEO, id=0)
-
-    f_video = show_alignment_and_focus(video, id=0, clipfactor=0.1)
-    f_video = play(f_video, fps = 15)
-
-    for i,frames in enumerate(f_video):
-        print ("Frame ",i)
+    for frames in video:
+       pass

@@ -262,7 +262,7 @@ if __name__ == '__main__':
     #t1,t2=run_simulation(trigger_config)
     
     run_arduino(trigger_config)
-
+    
      
 
 
