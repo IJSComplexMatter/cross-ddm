@@ -19,11 +19,11 @@ import numpy as np
 
 if __name__ == "__main__":
     
-    import cddm_experiment
     import matplotlib.pyplot as plt
     from cddm.video import apply_window, asarrays, fromarrays
     from cddm.window import blackman
-    from cddm import conf, iccorr_multi, normalize_multi, log_merge
+    from cddm.multitau import iccorr_multi, normalize_multi, log_merge
+    from cddm.conf import set_verbose
     from cddm.fft import rfft2
     from cddm_experiment.frame_grabber import frame_grabber, queued_multi_frame_grabber
     from cddm_experiment.config import load_config
@@ -36,7 +36,8 @@ if __name__ == "__main__":
             f2 = f2/(f2[0,0])
             yield f1,f2
 
-    conf.set_verbose(2)
+    set_verbose(2)
+    
     w1 = blackman((512,512))
     w2 = blackman((512,512))
 

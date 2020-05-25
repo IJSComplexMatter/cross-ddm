@@ -20,16 +20,16 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
 
-    import cddm_experiment
     from cddm.video import apply_window
     from cddm.window import blackman
-    from cddm import conf, iccorr_multi, normalize_multi, log_merge
+    from cddm.multitau import iccorr_multi, normalize_multi, log_merge
+    from cddm.conf import set_verbose
     from cddm.fft import rfft2, normalize_fft#mkl_rfft2
     from cddm_experiment.frame_grabber import frame_grabber, queued_multi_frame_grabber
     from cddm_experiment.trigger import run_simulation
     from cddm_experiment.config import load_config
 
-    conf.set_verbose(2)
+    set_verbose(2)
 
     w1 = blackman((512,512))
     w2 = blackman((512,512))
